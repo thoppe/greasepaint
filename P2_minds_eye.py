@@ -138,4 +138,6 @@ intensity = regions_of_high_intensity(C.img, blocksize=7, kernel_size=3)
 org.img = np.dstack([intensity,]*3)
 org.show()
 
+C.save('docs/images/third_eye.png')
 C.show()
+
