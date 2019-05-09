@@ -2,6 +2,10 @@ import pixelhouse as ph
 import cv2
 import numpy as np
 import json, os
+from scipy.signal import convolve2d
+import imutils
+
+np.random.seed(44)
 
 
 def transform(C, coords):
@@ -29,41 +33,11 @@ def chaikins_corner_cutting(coords, refinements=1):
 
     return coords
 
-
-
-def compute(canvas,
-            color=[0, 0, 0], opacity=0.6, n_blend=10, blur=0.3, n_applications=1
-):
-    C = canvas.copy()
-    
-    # Adjust color to have specified opacity
-    color = ph.color.matplotlib_colors(color)[:3]
-    liner_color = list(color) + [np.clip(opacity * 255, 0, 255)]
-
-    for k in range(n_applications):
-
-        right_eye = js['right_eye']
-        left_eye = js['left_eye']
-        
-        shadowing(C, right_eye, color=liner_color, dx=blur, n=n_blend)
-        shadowing(C, left_eye, color=liner_color, dx=blur, n=n_blend)
-
-        #shadowing(C, js["top_lip"], color=liner_color, dx=blur, n=n_blend)
-        #shadowing(C, js["bottom_lip"], color=liner_color, dx=blur, n=n_blend)
-
-        
-    return C
-
-pal = ["#FF6AD5", "#C774E8", "#AD8CFF", "#8795E8", "#94D0FF"]
-
-f_jpg = "data/source_images/tessa1.jpg"
-#f_jpg = 'data/source_images/emilia-clarke-no-makeup-blonde-brown-ftr.jpg'
-#f_jpg = 'data/source_images/obama-600x587.jpg'
-#f_jpg = 'data/source_images/000360.jpg'
-
-def cutbox(canvas, pts, pixel_buffer=0, n_bbox_smoothing=2):
+def cutbox(canvas, pts, pixel_buffer=0, n_bbox_smoothing=0):
     pts = np.array(pts)
-    #pts = chaikins_corner_cutting(pts, n_bbox_smoothing).astype(np.int64)
+
+    if n_bbox_smoothing:
+        pts = chaikins_corner_cutting(pts, n_bbox_smoothing).astype(np.int64)
 
     hull = cv2.convexHull(pts)
     
@@ -77,11 +51,6 @@ def cutbox(canvas, pts, pixel_buffer=0, n_bbox_smoothing=2):
     mask = np.zeros((*canvas.img.shape[:2],3), canvas.img.dtype)
 
     cv2.fillConvexPoly(mask, hull,color=[255,]*3)
-    #cv2.fillPoly(mask, hull,color=[255,]*3)
-
-    #mask[:,:] = [255,]*3
-    #mask = 255 * np.ones(canvas.img.shape, canvas.img.dtype)
-    #mask = mask[:,:,:3]
 
     img = canvas.img[bbox[0,0]:bbox[0,1], bbox[1,0]:bbox[1,1]]
     mask = mask[bbox[0,0]:bbox[0,1], bbox[1,0]:bbox[1,1]]
@@ -94,13 +63,48 @@ def cutbox(canvas, pts, pixel_buffer=0, n_bbox_smoothing=2):
 
 
 def pastebox(canvas, img, mask, location):
-    
-
     canvas.img[:,:,:3] = cv2.seamlessClone(
         img[:,:,:3],
         canvas.img[:,:,:3],
         mask, tuple(location), cv2.NORMAL_CLONE)
 
+def regions_of_high_intensity(img, blocksize=3, kernel_size=5):
+
+    # If color, remove the alpha channel and covert (assume BGR!)
+    if len(img.shape) == 3:
+        img = cv2.cvtColor(img[:,:,:3], cv2.COLOR_BGR2GRAY)
+        
+    # Compute the an adaptive Threshold    
+    lap = cv2.adaptiveThreshold(
+        img,255,
+        cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+        cv2.THRESH_BINARY,blocksize,4)
+
+    kernel = np.ones([kernel_size,]*2)
+    sig = convolve2d(255-lap, kernel, mode='full', boundary='symm')
+    sig /= kernel.sum()
+    sig = sig.astype(lap.dtype)
+
+    return sig
+
+def transform(img, scale=1.0, flip_horizontal=False, flip_vertical=False, rotate_angle=0):
+    if scale != 1:
+        img = cv2.resize(img, (0,0), fx=scale, fy=scale)
+
+    if flip_horizontal:
+        img = cv2.flip(img, 1)
+
+    if flip_vertical:
+        img = cv2.flip(img, 0)
+
+    if rotate_angle:
+        img = imutils.rotate(img, rotate_angle)
+
+    return img
+        
+
+
+f_jpg = "data/source_images/tessa1.jpg"
 
 name = os.path.basename(f_jpg)
 f_json = os.path.join(f"data/landmarks/{name}.json")
@@ -112,20 +116,26 @@ compute_centroids(js)
 C = ph.load(f_jpg)
 org = C.copy()
 
-img, mask = cutbox(C, js['right_eye'],50)
 minds_eye = (js['right_eye_centroid'] + js['left_eye_centroid'])/2
-
-np.random.seed(44)
-
 minds_eye = (js['right_eye_centroid'] + js['left_eye_centroid'])/2
 minds_eye[1] -= 100
 minds_eye = minds_eye.round().astype(int)
 
-dx = 0.75
-img = cv2.resize(img, (0,0), fx=dx, fy=dx)
-mask = cv2.resize(mask, (0,0), fx=dx, fy=dx) 
+img, mask = cutbox(C, js['right_eye'],50)
+dx = 0.80
+args = {"scale":dx, "flip_horizontal":False, "flip_vertical":False, "rotate_angle":3}
 
+img = transform(img, **args)
+mask = transform(mask, **args)
+
+#org.img = mask
+#org.show()
 
 
 pastebox(C, img, mask, minds_eye)
+
+intensity = regions_of_high_intensity(C.img, blocksize=7, kernel_size=3)
+org.img = np.dstack([intensity,]*3)
+org.show()
+
 C.show()
