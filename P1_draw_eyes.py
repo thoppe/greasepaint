@@ -5,14 +5,8 @@ import json, os
 
 def transform(C, coords):
     for key, val in coords.items():
-        val = [(C.inverse_transform_x(x), C.inverse_transform_y(y))
-               for x, y in val]
+        val = [(C.inverse_transform_x(x), C.inverse_transform_y(y)) for x, y in val]
         coords[key] = np.array(val)
-
-    print(coords)
-
-    print(C.extent)
-    exit()
 
 
 def chaikins_corner_cutting(coords, refinements=1):
@@ -29,6 +23,7 @@ def chaikins_corner_cutting(coords, refinements=1):
 
     return coords
 
+
 def shadowing(C, coords, color="r", n=5, dx=1.0, dy=1.0, refinements=2):
 
     # Smooth the eye coordinates a bit
@@ -39,56 +34,47 @@ def shadowing(C, coords, color="r", n=5, dx=1.0, dy=1.0, refinements=2):
     # Scale glow based of the extent in the x direction
     box_extent = coords.max(axis=0) - coords.min(axis=0)
     x_extent = box_extent[0]
-    ratio = box_extent[0]/box_extent[1]
+    ratio = box_extent[0] / box_extent[1]
 
     dx *= x_extent
-    dy *= x_extent/ratio/2
+    dy *= x_extent / ratio / 2
 
     # Make a copy of the image with a transparent mask
     C2 = C.copy()
     C2.img[:, :, 3] = 255
 
     # 'Glow' around the mask
-    eye = ph.polyline(ex, ey, is_filled=1, color='k')
-
-    C2 += ph.circle(ex[0]/2,ey[1]/2,r=1)
-    print(ex[0], ey[0])
-    
-
-    C2 += eye
-    C2.show()
-    exit()
-    
+    eye = ph.polyline(ex, ey, is_filled=1, color="k")
     C2 += ph.filters.glow(eye, glow_x=dx, glow_y=dy, n=n)
 
     # Erase the mask
     C2 += ph.polyline(ex, ey, is_filled=1, color=[0, 0, 0, 0])
 
-    
     # Overlay the glow
     C += C2
 
 
-def compute(canvas,
-            color=[0, 0, 0], opacity=0.6, n_blend=10, blur=0.3, n_applications=1
+def compute(
+    canvas, color=[0, 0, 0], opacity=0.6, n_blend=10, blur=0.3, n_applications=1
 ):
     C = canvas.copy()
-    
+
     # Adjust color to have specified opacity
     color = ph.color.matplotlib_colors(color)[:3]
     liner_color = list(color) + [np.clip(opacity * 255, 0, 255)]
 
     for k in range(n_applications):
 
-        right_eye = js['right_eye']
-        left_eye = js['left_eye']
-        
+        right_eye = js["right_eye"]
+        left_eye = js["left_eye"]
+
         shadowing(C, right_eye, color=liner_color, dx=blur, n=n_blend)
         shadowing(C, left_eye, color=liner_color, dx=blur, n=n_blend)
 
     return C
 
-'''
+
+"""
 
 def glitch(C, coords, color="r", n=5, dx=1.0, dy=1.0, refinements=2):
 
@@ -156,28 +142,24 @@ pts = np.random.normal(loc=cheek_center, scale=scale, size=[n_pts,2])
 with C.layer() as C2:
     for pt in pts:
         C2 += ph.circle(pt[0], pt[1], r=0.01, color=color)
-''' 
+"""
 
-#glitch(C, js['right_eye'])
-#exit()
+# glitch(C, js['right_eye'])
+# exit()
 
 
 pal = ["#FF6AD5", "#C774E8", "#AD8CFF", "#8795E8", "#94D0FF"]
 
 f_jpg = "data/source_images/tessa1.jpg"
-#f_jpg = 'data/source_images/emilia-clarke-no-makeup-blonde-brown-ftr.jpg'
-#f_jpg = 'data/source_images/obama-600x587.jpg'
-#f_jpg = 'data/source_images/000360.jpg'
-
+# f_jpg = 'data/source_images/emilia-clarke-no-makeup-blonde-brown-ftr.jpg'
+# f_jpg = 'data/source_images/obama-600x587.jpg'
+# f_jpg = 'data/source_images/000360.jpg'
 
 name = os.path.basename(f_jpg)
 f_json = os.path.join(f"data/landmarks/{name}.json")
 
 with open(f_json) as FIN:
     js = json.load(FIN)[0]
-
-#print(js.keys())
-#exit()
 
 C = ph.load(f_jpg)
 transform(C, js)

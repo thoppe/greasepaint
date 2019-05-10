@@ -12,19 +12,16 @@ def f_image_to_landmark_file(f_image):
 
 def locate_landmarks(f_image, save_data=False, model="hog"):
 
-    
     if save_data:
         f_json = f_image_to_landmark_file(f_image)
         if os.path.exists(f_json):
             return False
-    
-    
+
     # Load the jpg file into a numpy array
     image = face_recognition.load_image_file(f_image)
 
-    faces = face_recognition.face_locations(image, model=model)   
+    faces = face_recognition.face_locations(image, model=model)
     landmarks = face_recognition.face_landmarks(image, face_locations=faces)
-
 
     if len(landmarks) == 0:
         landmarks = {}
