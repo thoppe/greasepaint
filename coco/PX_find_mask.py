@@ -3,7 +3,12 @@ import h5py
 from tqdm import tqdm
 import numpy as np
 
-save_dest = "../data/masks"
+#save_dest = "../data/masks"
+#source_dest = "../data/source_images"
+
+save_dest = "../data/movie_mask"
+source_dest = "../movies"
+
 os.system(f"mkdir -p {save_dest}")
 
 clf = None
@@ -11,7 +16,7 @@ clf = None
 
 if __name__ == "__main__":
 
-    F_JPG = sorted(glob.glob(f"../data/source_images/*.jpg"))[::-1][1:]
+    F_JPG = sorted(glob.glob(f"{source_dest}/*.jpg"))
 
     for f in tqdm(F_JPG):
         f_save = os.path.join(save_dest, os.path.basename(f))+'.h5'

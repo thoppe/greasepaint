@@ -1,0 +1,7 @@
+scikit-image
+h5py
+imgaug
+keras
+IPython
+
+# pip install "git+https://github.com/philferriere/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI"
