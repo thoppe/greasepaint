@@ -44,7 +44,7 @@ def shadowing(C, coords, color="r", n=5, dx=1.0, dy=1.0, refinements=2):
     C2.img[:, :, 3] = 255
 
     # 'Glow' around the mask
-    eye = ph.polyline(ex, ey, is_filled=1, color="k")
+    eye = ph.polyline(ex, ey, is_filled=1, color=color)
     C2 += ph.filters.glow(eye, glow_x=dx, glow_y=dy, n=n)
 
     # Erase the mask
@@ -151,8 +151,12 @@ with C.layer() as C2:
 pal = ["#FF6AD5", "#C774E8", "#AD8CFF", "#8795E8", "#94D0FF"]
 
 f_jpg = "data/source_images/tessa1.jpg"
-# f_jpg = 'data/source_images/emilia-clarke-no-makeup-blonde-brown-ftr.jpg'
-# f_jpg = 'data/source_images/obama-600x587.jpg'
+f_jpg = "data/source_images/John_Cena_2012.jpg"
+f_jpg = "data/source_images/20190218_104842.jpg"
+
+
+#f_jpg = 'data/source_images/emilia-clarke-no-makeup-blonde-brown-ftr.jpg'
+#f_jpg = 'data/source_images/obama-600x587.jpg'
 # f_jpg = 'data/source_images/000360.jpg'
 
 name = os.path.basename(f_jpg)
@@ -168,4 +172,4 @@ compute(C, color="k", n_blend=10, blur=0.4, opacity=1.0).show()
 exit()
 
 for p in pal:
-    compute(C, color=p, n_blend=10, blur=0.4, opacity=0.6).show()
+    compute(C, color=p, n_blend=20, blur=0.4, opacity=0.8).show()

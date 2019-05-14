@@ -105,7 +105,9 @@ def transform(
     return img
 
 
-f_jpg = "data/source_images/tessa1.jpg"
+#f_jpg = "data/source_images/tessa1.jpg"
+#f_jpg = "data/source_images/obama-600x587.jpg"
+f_jpg = "data/source_images/20190218_104842.jpg"
 
 name = os.path.basename(f_jpg)
 f_json = os.path.join(f"data/landmarks/{name}.json")
@@ -119,16 +121,18 @@ org = C.copy()
 
 minds_eye = (js["right_eye_centroid"] + js["left_eye_centroid"]) / 2
 minds_eye = (js["right_eye_centroid"] + js["left_eye_centroid"]) / 2
+#minds_eye[1] -= 100
+
 minds_eye[1] -= 100
 minds_eye = minds_eye.round().astype(int)
 
 img, mask = cutbox(C, js["right_eye"], 50)
-dx = 0.80
+dx = .9
 args = {
     "scale": dx,
     "flip_horizontal": False,
     "flip_vertical": False,
-    "rotate_angle": 3,
+    "rotate_angle": -10,
 }
 
 img = transform(img, **args)
@@ -140,9 +144,9 @@ mask = transform(mask, **args)
 
 pastebox(C, img, mask, minds_eye)
 
-intensity = regions_of_high_intensity(C.img, blocksize=7, kernel_size=3)
-org.img = np.dstack([intensity] * 3)
-org.show()
+#intensity = regions_of_high_intensity(C.img, blocksize=7, kernel_size=3)
+#org.img = np.dstack([intensity] * 3)
+#org.show()
+#C.save("docs/images/third_eye.png")
 
-C.save("docs/images/third_eye.png")
 C.show()
