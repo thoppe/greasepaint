@@ -5,33 +5,17 @@ import json, os
 from scipy.signal import convolve2d
 import imutils
 
+from greasepaint import face_finder
+from greasepaint.utils import chaikins_corner_cutting
+
+
 np.random.seed(44)
-
-
-def transform(C, coords):
-    for key, val in coords.items():
-        val = [(C.inverse_transform_x(x), C.inverse_transform_y(y)) for x, y in val]
-        coords[key] = np.array(val)
-
 
 def compute_centroids(coords):
     for key, val in list(coords.items()):
         coords[f"{key}_centroid"] = np.array(val).mean(axis=0)
 
 
-def chaikins_corner_cutting(coords, refinements=1):
-    coords = np.array(coords)
-
-    for _ in range(refinements):
-        L = coords.repeat(2, axis=0)
-        R = np.empty_like(L)
-        R[0] = L[0]
-        R[2::2] = L[1:-1:2]
-        R[1:-1:2] = L[2::2]
-        R[-1] = L[-1]
-        coords = L * 0.75 + R * 0.25
-
-    return coords
 
 
 def cutbox(canvas, pts, pixel_buffer=0, n_bbox_smoothing=0):
@@ -87,7 +71,7 @@ def regions_of_high_intensity(img, blocksize=3, kernel_size=5):
     return sig
 
 
-def transform(
+def transform_image(
     img, scale=1.0, flip_horizontal=False, flip_vertical=False, rotate_angle=0
 ):
     if scale != 1:
@@ -105,48 +89,37 @@ def transform(
     return img
 
 
-#f_jpg = "data/source_images/tessa1.jpg"
-#f_jpg = "data/source_images/obama-600x587.jpg"
-f_jpg = "data/source_images/20190218_104842.jpg"
-
-name = os.path.basename(f_jpg)
-f_json = os.path.join(f"data/landmarks/{name}.json")
-
-with open(f_json) as FIN:
-    js = json.load(FIN)[0]
-compute_centroids(js)
+f_jpg = "data/source_images/tessa1.jpg"
+landmarks = face_finder(f_jpg)[0]
+compute_centroids(landmarks)
 
 C = ph.load(f_jpg)
 org = C.copy()
 
-minds_eye = (js["right_eye_centroid"] + js["left_eye_centroid"]) / 2
-minds_eye = (js["right_eye_centroid"] + js["left_eye_centroid"]) / 2
-#minds_eye[1] -= 100
+minds_eye = landmarks["right_eye_centroid"] + landmarks["left_eye_centroid"]
+minds_eye /= 2
 
 minds_eye[1] -= 100
 minds_eye = minds_eye.round().astype(int)
 
-img, mask = cutbox(C, js["right_eye"], 50)
+img, mask = cutbox(C, landmarks["right_eye"], 50)
 dx = .9
 args = {
     "scale": dx,
     "flip_horizontal": False,
     "flip_vertical": False,
-    "rotate_angle": -10,
+    "rotate_angle": 0,
 }
 
-img = transform(img, **args)
-mask = transform(mask, **args)
-
-# org.img = mask
-# org.show()
-
+img = transform_image(img, **args)
+mask = transform_image(mask, **args)
 
 pastebox(C, img, mask, minds_eye)
 
 #intensity = regions_of_high_intensity(C.img, blocksize=7, kernel_size=3)
 #org.img = np.dstack([intensity] * 3)
 #org.show()
-#C.save("docs/images/third_eye.png")
+
+C.copy().resize(0.5).save("docs/images/tessa1_third_eye.png")
 
 C.show()

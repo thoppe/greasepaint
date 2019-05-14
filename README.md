@@ -6,7 +6,7 @@ A python library to manipulate the faces. Think snapchat but weirder.
 
 ## Examples
 
-![ThirdEye](docs/images/third_eye.png)
+![ThirdEye](docs/images/tessa1_third_eye.png) ![ThirdEye](docs/images/tessa1_eyeliner.png)
 
 
 ### Reminders for self
