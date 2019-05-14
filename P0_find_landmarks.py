@@ -30,7 +30,7 @@ def locate_landmarks(f_image):
     return landmarks
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":   
 
     JPG = sorted(glob.glob(f"data/source_images/*.jpg"))
     for f in tqdm(JPG):
