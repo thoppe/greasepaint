@@ -53,10 +53,11 @@ def transform_image(
 
 
 f_jpg = "data/source_images/tessa1.jpg"
+
 landmarks = face_finder(f_jpg)[0]
 compute_centroids(landmarks)
 
-C = ph.load(f_jpg)
+C = ph.load(f_jpg)#.resize(0.5).save("docs/images/tessa1.jpg")
 org = C.copy()
 
 eye, mask, full_mask = cutbox(C, landmarks["right_eye"], 50)
