@@ -7,6 +7,14 @@ def transform(C, coords):
              C.inverse_transform_y(y)) for x, y in val]
         coords[key] = np.array(val)
 
+def compute_centroids(coords):
+    '''
+    Return the centroids of each object in the dict by adding to the dict
+    a {key}_centroid with a single vector.
+    '''
+    for key, val in list(coords.items()):
+        coords[f"{key}_centroid"] = np.array(val).mean(axis=0)
+
 
 def chaikins_corner_cutting(coords, refinements=1):
     coords = np.array(coords)

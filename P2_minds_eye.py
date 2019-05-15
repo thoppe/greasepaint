@@ -6,49 +6,42 @@ from scipy.signal import convolve2d
 import imutils
 
 from greasepaint import face_finder
-from greasepaint.utils import chaikins_corner_cutting
-
+from greasepaint.utils import compute_centroids
 
 np.random.seed(44)
 
-def compute_centroids(coords):
-    for key, val in list(coords.items()):
-        coords[f"{key}_centroid"] = np.array(val).mean(axis=0)
 
-
-
-
-def cutbox(canvas, pts, pixel_buffer=0, n_bbox_smoothing=0):
+def cutbox(canvas, pts, pixel_buffer=0):
+    '''
+    Given a set of points, cuts out of the canvas a bounding box with
+    pixel_buffer number of pixels outside of the bbox,
+    '''
+    
     pts = np.array(pts)
 
-    if n_bbox_smoothing:
-        pts = chaikins_corner_cutting(pts, n_bbox_smoothing).astype(np.int64)
+    y0 = pts[:, 0].min() - pixel_buffer
+    y1 = pts[:, 0].max() + pixel_buffer
+
+    x0 = pts[:, 1].min() - pixel_buffer
+    x1 = pts[:, 1].max() + pixel_buffer
+    
+    mask = np.zeros(canvas.shape[:2], canvas.img.dtype)
 
     hull = cv2.convexHull(pts)
+    cv2.fillConvexPoly(mask, hull, color=255)
 
-    bbox = np.array(
-        [[pts[:, 1].min(), pts[:, 1].max()], [pts[:, 0].min(), pts[:, 0].max()]]
-    )
-    bbox[:, 0] -= pixel_buffer
-    bbox[:, 1] += pixel_buffer
-
-    mask = np.zeros((*canvas.img.shape[:2], 3), canvas.img.dtype)
-
-    cv2.fillConvexPoly(mask, hull, color=[255] * 3)
-
-    img = canvas.img[bbox[0, 0] : bbox[0, 1], bbox[1, 0] : bbox[1, 1]]
-    mask = mask[bbox[0, 0] : bbox[0, 1], bbox[1, 0] : bbox[1, 1]]
+    img = canvas.rgb[x0:x1, y0:y1]
+    mask = mask[x0:x1, y0:y1]
 
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
     mask = cv2.dilate(mask, kernel, iterations=13)
 
-    img = img[:, :, :3]
     return img, mask
 
 
 def pastebox(canvas, img, mask, location):
-    canvas.img[:, :, :3] = cv2.seamlessClone(
-        img[:, :, :3], canvas.img[:, :, :3], mask, tuple(location), cv2.NORMAL_CLONE
+    canvas.rgb = cv2.seamlessClone(
+        img, canvas.rgb, mask, tuple(location), cv2.MIXED_CLONE
     )
 
 
@@ -116,9 +109,9 @@ mask = transform_image(mask, **args)
 
 pastebox(C, img, mask, minds_eye)
 
-#intensity = regions_of_high_intensity(C.img, blocksize=7, kernel_size=3)
-#org.img = np.dstack([intensity] * 3)
-#org.show()
+intensity = regions_of_high_intensity(C.img, blocksize=7, kernel_size=3)
+org.img = np.dstack([intensity] * 3)
+org.show()
 
 C.copy().resize(0.5).save("docs/images/tessa1_third_eye.png")
 
