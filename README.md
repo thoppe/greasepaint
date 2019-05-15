@@ -8,6 +8,15 @@ A python library to manipulate the faces. Think snapchat but weirder.
 
 ![ThirdEye](docs/images/tessa1_third_eye.png) ![ThirdEye](docs/images/tessa1_eyeliner.png)
 
+![](docs/images/eyes0.jpg)
+![](docs/images/eyes1.jpg)
+![](docs/images/eyes2.jpg)
+![](docs/images/eyes3.jpg)
+![](docs/images/eyes4.jpg)
+![](docs/images/eyes5.jpg)
+![](docs/images/eyes6.jpg)
+
+
 
 ### Reminders for self
 

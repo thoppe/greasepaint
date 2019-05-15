@@ -41,6 +41,8 @@ def shadowing(C, coords, color="r", n=5, dx=1.0, dy=1.0, n_refinements=2):
     # Overlay the glow
     C += C2
 
+    return C
+
 
 def eye_makeup(canvas, landmarks, color="k", opacity=0.6, n_blend=10, blur=0.3):
 
