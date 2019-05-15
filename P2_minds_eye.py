@@ -61,7 +61,6 @@ org = C.copy()
 
 eye, mask, full_mask = cutbox(C, landmarks["right_eye"], 50)
 
-
 # Blow out the mask a bit
 kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
 mask = cv2.dilate(mask, kernel, iterations=10)
