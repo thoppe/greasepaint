@@ -11,30 +11,27 @@ from greasepaint.utils import compute_centroids, cutbox
 np.random.seed(44)
 
 
-
-def pastebox(canvas, img, mask, location):
+def pastebox(canvas, source, mask, location):
     canvas.rgb = cv2.seamlessClone(
-        img, canvas.rgb, mask, tuple(location), cv2.MIXED_CLONE
+        source.rgb, canvas.rgb, mask, tuple(location), cv2.NORMAL_CLONE
     )
 
 
-def regions_of_high_intensity(img, blocksize=3, kernel_size=5):
+def regions_of_high_intensity(canvas, blocksize=3, kernel_size=5):
 
     # If color, remove the alpha channel and covert (assume BGR!)
-    if len(img.shape) == 3:
-        img = cv2.cvtColor(img[:, :, :3], cv2.COLOR_BGR2GRAY)
+    img = cv2.cvtColor(canvas.rgb, cv2.COLOR_RGB2GRAY)
 
     # Compute the an adaptive Threshold
     lap = cv2.adaptiveThreshold(
-        img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, blocksize, 4
-    )
+    img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, blocksize, 4)
 
     kernel = np.ones([kernel_size] * 2)
     sig = convolve2d(255 - lap, kernel, mode="full", boundary="symm")
     sig /= kernel.sum()
     sig = sig.astype(lap.dtype)
 
-    return sig
+    return ph.Canvas(img=sig)
 
 
 def transform_image(
@@ -62,29 +59,31 @@ compute_centroids(landmarks)
 C = ph.load(f_jpg)
 org = C.copy()
 
+eye, mask, full_mask = cutbox(C, landmarks["right_eye"], 50)
+
+
+# Blow out the mask a bit
+kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+mask = cv2.dilate(mask, kernel, iterations=10)
+
 minds_eye = landmarks["right_eye_centroid"] + landmarks["left_eye_centroid"]
 minds_eye /= 2
 
 minds_eye[1] -= 100
 minds_eye = minds_eye.round().astype(int)
 
-img, mask = cutbox(C, landmarks["right_eye"], 50)
-dx = .9
-args = {
-    "scale": dx,
-    "flip_horizontal": False,
-    "flip_vertical": False,
-    "rotate_angle": 0,
-}
 
-img = transform_image(img, **args)
-mask = transform_image(mask, **args)
+#avg = C.img[full_mask>0].mean(axis=0).astype(np.uint8)
+#C[full_mask>0] = avg
+#C.show()
+#pastebox(C, eye, mask, minds_eye)
+#exit()
 
-pastebox(C, img, mask, minds_eye)
+C.rgb = cv2.seamlessClone(eye.rgb, C.rgb, mask, tuple(minds_eye), cv2.NORMAL_CLONE)
 
-intensity = regions_of_high_intensity(C.img, blocksize=7, kernel_size=3)
-org.img = np.dstack([intensity] * 3)
-org.show()
+#intensity = regions_of_high_intensity(org, blocksize=7, kernel_size=3)
+#intensity.show()
+#exit()
 
 C.copy().resize(0.5).save("docs/images/tessa1_third_eye.png")
 

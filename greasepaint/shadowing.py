@@ -2,6 +2,7 @@ import pixelhouse as ph
 from .utils import chaikins_corner_cutting
 import numpy as np
 
+
 def shadowing(C, coords, color="r", n=5, dx=1.0, dy=1.0, n_refinements=2):
     """
     Shadows around a set of "coords" onto a canvas.
@@ -40,7 +41,8 @@ def shadowing(C, coords, color="r", n=5, dx=1.0, dy=1.0, n_refinements=2):
     # Overlay the glow
     C += C2
 
-def eye_makeup(canvas, landmarks, color='k', opacity=0.6, n_blend=10, blur=0.3):
+
+def eye_makeup(canvas, landmarks, color="k", opacity=0.6, n_blend=10, blur=0.3):
 
     # Adjust color to have specified opacity
     color = ph.color.matplotlib_colors(color)[:3]
@@ -49,12 +51,7 @@ def eye_makeup(canvas, landmarks, color='k', opacity=0.6, n_blend=10, blur=0.3):
     right_eye = landmarks["right_eye"]
     left_eye = landmarks["left_eye"]
 
-    args = {
-        "color":liner_color,
-        "dx":blur,
-        "dy":blur/2,
-        "n":n_blend,
-    }
+    args = {"color": liner_color, "dx": blur, "dy": blur / 2, "n": n_blend}
 
     C = canvas.copy()
     shadowing(C, right_eye, **args)
