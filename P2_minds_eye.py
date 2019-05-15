@@ -57,7 +57,7 @@ f_jpg = "data/source_images/tessa1.jpg"
 landmarks = face_finder(f_jpg)[0]
 compute_centroids(landmarks)
 
-ph.load(f_jpg).resize(0.5).save("docs/images/tessa1.jpg")
+ph.load(f_jpg).resize(0.5).save("docs/images/tessa1_src.jpg")
 
 C = ph.load(f_jpg)
 org = C.copy()
