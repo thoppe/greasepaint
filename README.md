@@ -30,8 +30,8 @@ Simple example
 + Test release, check coverage, and lint
 + Push the release to [pypi live](https://pypi.org/project/pixelhouse/)
 
-    fab lint
-    fab test
-    rm dist/ -rvf && python setup.py sdist
-    twine upload -r test dist/*
-    twine upload dist/*
+     fab lint
+     fab test
+     rm dist/ -rvf && python setup.py sdist
+     twine upload -r test dist/*
+     twine upload dist/*
