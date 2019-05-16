@@ -6,8 +6,6 @@ A python library to manipulate the faces. Think snapchat but weirder.
 
 ## Examples
 
-![org](docs/images/tessa1_src.jpg)  ![ThirdEye](docs/images/tessa1_third_eye.png) 
-
 ![](docs/images/eyes0.jpg)
 ![](docs/images/eyes1.jpg)
 ![](docs/images/eyes2.jpg)
@@ -15,8 +13,5 @@ A python library to manipulate the faces. Think snapchat but weirder.
 ![](docs/images/eyes4.jpg)
 ![](docs/images/eyes5.jpg)
 
+![org](docs/images/tessa1_src.jpg)  ![ThirdEye](docs/images/tessa1_third_eye.png) 
 
-
-### Reminders for self
-
-    avconv -threads auto -y -r 30 -q:v 1     %06d.jpg    -i Reacting_To_People_Who_Have_Smash_Or_Passed_Me-m0ttpozYW14.mp4
