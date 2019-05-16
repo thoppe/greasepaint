@@ -32,7 +32,7 @@ setuptools.setup(
     install_requires=[
         "face_recognition",
         "pixelhouse>=0.5.3",
-        "cv2",
+        "opencv-python",
         "numpy",
     ],
     

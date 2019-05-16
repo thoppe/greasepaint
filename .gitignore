@@ -1,2 +1,5 @@
 *~
 data/source_images/*
+.tox/
+tests/__pycache__/
+greasepaint.egg-info/
