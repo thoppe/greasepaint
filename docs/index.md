@@ -11,6 +11,7 @@
 <br>
 ..text-intro
 https://github.com/thoppe/greasepaint
+..
 
 -----
 
@@ -54,10 +55,14 @@ Ours was glam rock. 👨‍🎤
 ### .text-data **greasepaint**
 A python library to modify faces.
 
+
+    pip install greasepaint
+
+<br>
+
 ```
 from greasepaint import eyeliner
-canvas = eyeliner("docs/images/tessa.jpg")
-canvas.show()
+eyeliner("docs/images/tessa.jpg").show()
 ```
 <br>
 
@@ -69,8 +74,8 @@ canvas.show()
 -----
 ...wrap 
 
-..wrap ![](images/eyes0.jpg)
-..
+.wrap ![](images/eyes0.jpg) ![](images/eyes1.jpg)
+
 <br>
 
 ```
@@ -124,35 +129,35 @@ _Poisson Image Editing FTW_
 ...wrap
 # Pat Toomey
 <br>
-![](images/Pat_Toomey.jpg)
+..wrap ![](images/Pat_Toomey.jpg)
 
 -----
 
 ...wrap
 # Rand Paul
 <br>
-![](images/Rand_Paul.jpg)
+..wrap ![](images/Rand_Paul.jpg)
 
 -----
 
 ...wrap
 # John Kennedy
 <br>
-![](images/John_Kennedy.jpg)
+..wrap ![](images/John_Kennedy.jpg)
 
 -----
 
 ...wrap
 # Tim Scott
 <br>
-![](images/Tim_Scott.jpg)
+..wrap ![](images/Tim_Scott.jpg)
 
 -----
 
 ...wrap
 # Bernie Sanders
 <br>
-![](images/Bernie_Sanders.jpg)
+..wrap ![](images/Bernie_Sanders.jpg)
 
 -----
 
