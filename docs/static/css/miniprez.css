@@ -1,0 +1,47 @@
+/* Fix the hidding of side bars */
+#webslides {
+  overflow-y: visible;
+  overflow-x: visible;
+}
+
+/* Substitutes for <hr> */
+.line {
+    display:block;
+    background: radial-gradient(ellipse at center,
+				rgba(0, 20, 80, 0.2) 0,
+				rgba(255, 255, 255, 0) 75%);
+
+    height: 1px;
+    border: none;
+    margin: 3.2rem auto;
+}
+
+/* Clean up markdown lists */
+ul {
+    padding: 0;
+    list-style: none;
+}
+
+ul>li {
+    margin:0 0 2rem 0;
+}
+
+/* On mobile devices, headers and footers overlap text, 
+   remove absolute positioning */
+
+@media only screen and (max-device-width: 640px) {
+    header,
+    section footer {
+	position: inherit !important;
+    }
+}
+
+.left { text-align: left; }
+.right { text-align: right; }
+
+
+code {
+    display: inline-table;
+}
+
+
