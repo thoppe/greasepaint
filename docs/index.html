@@ -8,8 +8,6 @@
   <link href="static/css/webslides.css" media="all" rel="stylesheet" type="text/css"/>
   <link href="static/css/miniprez.css" media="all" rel="stylesheet" type="text/css"/>
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,700,700i%7CMaitree:200,300,400,600,700&amp;amp;subset=latin-ext" media="all" rel="stylesheet" type="text/css"/>
-  <link href="static/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css"/>
-  <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" media="all" rel="stylesheet" type="text/css"/>
  </head>
  <body>
   <article id="webslides">
@@ -35,19 +33,21 @@
      </div>
     </div>
    </section>
-   <section class="slide bg-black" data-slide-number="1">
-    <h3>
-     New hobby
-    </h3>
-    <p>
-     <span class="wrap">
+   <section class="slide" data-slide-number="1">
+    <span class="bg-black">
+    </span>
+    <div class="wrap">
+     <h3>
+      New hobby
+     </h3>
+     <p>
       falling and missing
-     </span>
-     <span class="wrap container">
+     </p>
+     <div class="div">
       <img alt="" src="images/flying.jpg"/>
       <img alt="" src="images/trapeze.webp"/>
-     </span>
-    </p>
+     </div>
+    </div>
    </section>
    <section class="slide align-right bg-white" data-slide-number="2">
     <span class="dark background background" style="background-image:url('https://source.unsplash.com/O6TrpoUjrls')">
@@ -82,218 +82,136 @@ Ours was glam rock. 👨‍🎤
      </div>
     </div>
    </section>
-   <section class="slide align-left bg-black" data-slide-number="4">
-    <p>
-     reetr
-trere
-    </p>
-    <h1>
-     <em>
-      markdown
-     </em>
-    </h1>
-    <h3>
-     Basic
-     <a href="https://daringfireball.net/projects/markdown/syntax">
-      Markdown
-     </a>
+   <section class="slide wrap" data-slide-number="4">
+    <h3 class="text-data">
+     <strong>
+      greasepaint
+     </strong>
     </h3>
+    <p>
+     A python library to modify faces.
+    </p>
+    <pre><code class="prettyprint">from greasepaint import eyeliner
+canvas = eyeliner("docs/images/tessa.jpg")
+canvas.show()
+</code></pre>
     <br/>
-    <ul>
-     <li>
+    <div class="div">
+     <img alt="" src="images/tessa1_src.jpg"/>
+     <img alt="" src="images/tessa1_liner.jpg"/>
+    </div>
+   </section>
+   <section class="slide wrap" data-slide-number="5">
+    <div class="wrap">
+     <img alt="" src="images/eyes0.jpg"/>
+    </div>
+    <br/>
+    <pre><code class="prettyprint">from greasepaint import eyeshadow
+
+vaporwave_pal = ["#FF6AD5", "#C774E8", "#AD8CFF", "#8795E8", "#94D0FF"]
+
+def crop_eyes(canvas, f_save):
+    canvas = canvas.copy()
+    canvas.img = canvas.img[200:270, 122:340]
+    canvas.save(f_save)
+
+
+for k,p in enumerate(vaporwave_pal):
+    canvas = eyeshadow("tessa1.jpg", color=p)
+    crop_eyes(canvas, f"docs/images/eyes{k+2}.jpg")
+</code></pre>
+    <br/>
+    <div class="wrap">
+     <img alt="" src="images/eyes2.jpg"/>
+     <img alt="" src="images/eyes3.jpg"/>
+     <img alt="" src="images/eyes4.jpg"/>
+     <img alt="" src="images/eyes5.jpg"/>
+    </div>
+   </section>
+   <section class="slide wrap" data-slide-number="6">
+    <h3 class="text-landing">
+     <strong>
+      body modifications
+     </strong>
+    </h3>
+    <div class="wrap">
+     <img alt="" src="images/tessa1_src.jpg"/>
+     <img alt="" src="images/tessa1_third_eye.png"/>
+    </div>
+    <h3 class="text-landing">
+     <strong>
+      body modifications
+     </strong>
+    </h3>
+    <p>
+     <em>
+      Poisson Image Editing FTW
+     </em>
+    </p>
+   </section>
+   <section class="slide wrap" data-slide-number="7">
+    <h1>
+     Who needs more glam?
+    </h1>
+    <br/>
+   </section>
+   <section class="slide wrap" data-slide-number="8">
+    <h1>
+     Who needs more glam?
+    </h1>
+    <br/>
+    <h3>
+     The United States Senate.
+    </h3>
+   </section>
+   <section class="slide wrap" data-slide-number="9">
+    <h1>
+     Pat Toomey
+    </h1>
+    <br/>
+    <img alt="" src="images/Pat_Toomey.jpg"/>
+   </section>
+   <section class="slide wrap" data-slide-number="10">
+    <h1>
+     Rand Paul
+    </h1>
+    <br/>
+    <img alt="" src="images/Rand_Paul.jpg"/>
+   </section>
+   <section class="slide wrap" data-slide-number="11">
+    <h1>
+     John Kennedy
+    </h1>
+    <br/>
+    <img alt="" src="images/John_Kennedy.jpg"/>
+   </section>
+   <section class="slide wrap" data-slide-number="12">
+    <h1>
+     Tim Scott
+    </h1>
+    <br/>
+    <img alt="" src="images/Tim_Scott.jpg"/>
+   </section>
+   <section class="slide wrap" data-slide-number="13">
+    <h1>
+     Bernie Sanders
+    </h1>
+    <br/>
+    <img alt="" src="images/Bernie_Sanders.jpg"/>
+   </section>
+   <section class="slide" data-slide-number="14">
+    <div class="wrap">
+     <h2>
       <strong>
-       bold
+       Thanks, you!
       </strong>
-      <code>
-       **text**
-      </code>
-     </li>
-     <li>
-      <em>
-       fire
-      </em>
-      <code>
-       *text*
-      </code>
-     </li>
-     <li>
-      <em>
-       emph
-      </em>
-      <code>
-       _text_
-      </code>
-     </li>
-    </ul>
-   </section>
-   <section class="slide align-left bg-black" data-slide-number="5">
-    <span class="dark background background" style="background-image:url('https://source.unsplash.com/pmX9BkDDr_A')">
-    </span>
-    <div class="wrap">
-     <h1>
-      <em>
-       emoji
-      </em>
-     </h1>
-     <h3>
-      standard emoji and
-      <a href="http://fontawesome.io/">
-       font-awesome
-      </a>
-     </h3>
-     <br/>
-     <div class="text-intro">
-      <ul>
-       <li>
-        <code>
-         :battery:
-        </code>
-        🔋
-       </li>
-       <li>
-        <code>
-         :heart_eyes:
-        </code>
-        😍
-       </li>
-       <li>
-        <code>
-         ::meetup::
-        </code>
-        <span aria-hidden="true" class="fa fa-meetup">
-        </span>
-       </li>
-       <li>
-        <code>
-         ::ra::
-        </code>
-        <span aria-hidden="true" class="fa fa-ra">
-        </span>
-       </li>
-      </ul>
-     </div>
-    </div>
-   </section>
-   <section class="slide bg-apple align-left" data-slide-number="6">
-    <span class="dark background background" style="background-image:url('https://source.unsplash.com/5mZ_M06Fc9g')">
-    </span>
-    <div class="wrap">
-     <h1>
-      <em>
-       math support
-      </em>
-     </h1>
-     <p>
-      LaTeX rendered inline with
-      <a href="https://github.com/Khan/KaTeX">
-       KaTex
-      </a>
-     </p>
-     <span class="line">
-     </span>
-     <h3>
-      <span class="inline-equation" data-expr="P(x)=\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma ^2}}">
-      </span>
-     </h3>
-     <p>
-      <br/>
-      <code>
-       $P(x)=\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma ^2}}$
-      </code>
-     </p>
-    </div>
-   </section>
-   <section class="slide align-left bg-black fullscreen" data-slide-number="7">
-    <span class="background background" style="background-image:url('https://source.unsplash.com/7BiMECHFgFY')">
-    </span>
-    <div class="wrap">
-     <div class="bg-white wrap">
-      <h1>
-       <em>
-        pretty code blocks
-       </em>
-      </h1>
-      <p>
-       Syntax highlighting Google's
-       <a href="https://github.com/google/code-prettify">
-        code prettify
-       </a>
-       . Code blocks are context-aware.
-      </p>
-      <pre><code class="prettyprint">sort [] = []
-sort (x:xs) = sort lower ++ [x] ++ sort higher
-    where
-        lower = filter (&lt; x) xs
-        higher = filter (&gt;= x) xs
-</code></pre>
-      <br/>
-      <pre><code class="prettyprint">// to convert prefix to postfix
-main() {
-  char c = getchar();
-  (c == '+' || c == '-' || c == '*' || c == '/') ? main(), main() : 0;
-  putchar(c);
-}
-</code></pre>
-     </div>
-    </div>
-   </section>
-   <section class="slide" data-slide-number="8">
-    <span class="background">
-    </span>
-    <div class="wrap">
-     <div class="slide-top">
-      <h2>
-       <em>
-        looping background animations
-       </em>
-      </h2>
-      <p>
-       Embed/hotlink any video file (thanks
-       <a href="https://www.shutterstock.com/">
-        Shutterstock
-       </a>
-       !)
-      </p>
-     </div>
-    </div>
-   </section>
-   <section class="slide slide-bottom bg-black" data-slide-number="9">
-    <span class="light background background" style="background-image:url('https://source.unsplash.com/U5rMrSI7Pn4')">
-    </span>
-    <div class="wrap">
-     <div class="content-center text-shadow">
-      <h2 class="text-landing">
-       <strong>
-        A pug and an Equation
-       </strong>
-      </h2>
-      <h3>
-       <div class="block-equation" data-expr="i \hbar \frac{\partial}{\partial t}\Psi(\mathbf{r},t) = \hat H \Psi(\mathbf{r},t)">
-       </div>
-      </h3>
-      <p>
-       this slide looks important right? It's not!
-      </p>
-      <p>
-       Oh look, an inline
-       <span class="inline-equation" data-expr="x^2">
-       </span>
-       equation.
-      </p>
-     </div>
-    </div>
-   </section>
-   <section class="slide bg-apple" data-slide-number="10">
-    <div class="wrap">
-     <h2 class="text-data">
-      Thanks, you!
      </h2>
      <h4>
-      Contribute at
+      Contribute, or suggest an issue at
      </h4>
      <h2>
-      <a href="https://github.com/thoppe/miniprez">
-       https://github.com/thoppe/miniprez
+      <a href="https://github.com/thoppe/greasepaint">
+       https://github.com/thoppe/greasepaint
       </a>
      </h2>
     </div>
@@ -304,10 +222,6 @@ main() {
   <script src="static/js/slider.js">
   </script>
   <script src="static/js/run_prettify.js">
-  </script>
-  <script crossorigin="anonymous" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js">
-  </script>
-  <script src="static/js/render_equations.js">
   </script>
  </body>
 </html>

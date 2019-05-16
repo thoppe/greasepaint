@@ -13,6 +13,7 @@ canvas = ph.load(f_jpg)
 crop_eyes(canvas, "docs/images/eyes0.jpg")
 
 canvas = eyeliner(canvas)
+canvas.resize(.5).save("docs/images/tessa1_liner.jpg")
 crop_eyes(canvas, "docs/images/eyes1.jpg")
 
 for k,p in enumerate(vaporwave_pal):

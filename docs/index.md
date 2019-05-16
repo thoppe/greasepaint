@@ -15,11 +15,13 @@ https://github.com/thoppe/greasepaint
 -----
 
 % Triple dots indicate a slide level class
-...bg-black
+....bg-black
 
+..wrap
 ### New hobby
-.wrap falling and missing
-.wrap.container ![](images/flying.jpg) ![](images/trapeze.webp)
+falling and missing
+
+..div ![](images/flying.jpg) ![](images/trapeze.webp)
 
 
 --------
@@ -47,100 +49,116 @@ Ours was glam rock. 👨‍🎤
 ..slide-top
 ### Look at all the makeup.
 
-
 -----
-reetr
-tre
-...align-left.bg-black
-re
-# _markdown_
-### Basic [Markdown](https://daringfireball.net/projects/markdown/syntax)
-<br>
-
-+ **bold** `**text**`
-+ *fire* `*text*`
-+ _emph_ `_text_`
-
------
-!!(https://source.unsplash.com/pmX9BkDDr_A class="dark")
-
-...align-left.bg-black
-
-# _emoji_
-### standard emoji and [font-awesome](http://fontawesome.io/)
-<br>
-
-..text-intro
-+ `:battery:` :battery:
-+ `:heart_eyes:` :heart_eyes:
-+ `::meetup::` ::meetup::
-+ `::ra::` ::ra:: 
-
------
-!!(https://source.unsplash.com/5mZ_M06Fc9g class="dark")
-...bg-apple ...align-left
-
-# _math support_
-LaTeX rendered inline with [KaTex](https://github.com/Khan/KaTeX)  
-
-.line
-
-### $P(x)=\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma ^2}}$
-<br>
-`$P(x)=\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma ^2}}$`
-
------
-!!(https://source.unsplash.com/7BiMECHFgFY)
-...align-left.bg-black.fullscreen
-
-..bg-white.wrap
-# _pretty code blocks_
-Syntax highlighting Google's [code prettify](https://github.com/google/code-prettify). Code blocks are context-aware.
+...wrap 
+### .text-data **greasepaint**
+A python library to modify faces.
 
 ```
-sort [] = []
-sort (x:xs) = sort lower ++ [x] ++ sort higher
-    where
-        lower = filter (< x) xs
-        higher = filter (>= x) xs
+from greasepaint import eyeliner
+canvas = eyeliner("docs/images/tessa.jpg")
+canvas.show()
 ```
 <br>
-```
-// to convert prefix to postfix
-main() {
-  char c = getchar();
-  (c == '+' || c == '-' || c == '*' || c == '/') ? main(), main() : 0;
-  putchar(c);
-} 
-```
 
-------
-!!(https://cdn.shutterstock.com/shutterstock/videos/15778135/preview/stock-footage-office-chair-race-slow-motion-young-guys-have-fun-in-the-office-during-a-break-games-of-businessm.mp4)
+..div
+![](images/tessa1_src.jpg)
+![](images/tessa1_liner.jpg)
 
-..slide-top
-## _looping background animations_
-Embed/hotlink any video file (thanks [Shutterstock](https://www.shutterstock.com/)!)
+
+-----
+...wrap 
+
+..wrap ![](images/eyes0.jpg)
+..
+<br>
+
+```
+from greasepaint import eyeshadow
+
+vaporwave_pal = ["#FF6AD5", "#C774E8", "#AD8CFF", "#8795E8", "#94D0FF"]
+
+def crop_eyes(canvas, f_save):
+    canvas = canvas.copy()
+    canvas.img = canvas.img[200:270, 122:340]
+    canvas.save(f_save)
+
+
+for k,p in enumerate(vaporwave_pal):
+    canvas = eyeshadow("tessa1.jpg", color=p)
+    crop_eyes(canvas, f"docs/images/eyes{k+2}.jpg")
+```
+<br>
+
+..wrap
+![](images/eyes2.jpg)
+![](images/eyes3.jpg)
+![](images/eyes4.jpg)
+![](images/eyes5.jpg)
+
+
+-----
+...wrap
+### .text-landing **body modifications**
+..wrap
+![](images/tessa1_src.jpg)  ![](images/tessa1_third_eye.png)
+..
+### .text-landing **body modifications**
+
+_Poisson Image Editing FTW_
+
+-----
+...wrap
+# Who needs more glam?
+<br>
 
 -----
 
-!!(https://source.unsplash.com/U5rMrSI7Pn4 class="light")
+...wrap
+# Who needs more glam?
+<br>
+### The United States Senate.
 
-...slide-bottom.bg-black
+-----
 
-..content-center.text-shadow
-## .text-landing **A pug and an Equation**
-### $$i \hbar \frac{\partial}{\partial t}\Psi(\mathbf{r},t) = \hat H \Psi(\mathbf{r},t)$$
-  
-this slide looks important right? It's not!
+...wrap
+# Pat Toomey
+<br>
+![](images/Pat_Toomey.jpg)
 
-Oh look, an inline $x^2$ equation.
+-----
 
-------
+...wrap
+# Rand Paul
+<br>
+![](images/Rand_Paul.jpg)
 
-...bg-apple
+-----
+
+...wrap
+# John Kennedy
+<br>
+![](images/John_Kennedy.jpg)
+
+-----
+
+...wrap
+# Tim Scott
+<br>
+![](images/Tim_Scott.jpg)
+
+-----
+
+...wrap
+# Bernie Sanders
+<br>
+![](images/Bernie_Sanders.jpg)
+
+-----
+
 ..wrap
 
-## .text-data Thanks, you!
-#### Contribute at
-## [https://github.com/thoppe/miniprez](https://github.com/thoppe/miniprez)
+## **Thanks, you!**
+#### Contribute, or suggest an issue at
+## [https://github.com/thoppe/greasepaint](https://github.com/thoppe/greasepaint)
 
